@@ -1,0 +1,11 @@
+php
+===
+
+* Copy `config/template-config.inc.php` to `config/config.inc.php`
+* Personlize configuration
+
+
+xquery
+======
+
+
