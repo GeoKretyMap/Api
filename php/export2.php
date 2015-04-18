@@ -64,8 +64,9 @@ try {
   // close session
   $session->close();
 
-echo '</gkxml>';
+  echo '</gkxml>';
 } catch (Exception $e) {
-    echo '<error>',  $e->getMessage(), "</error>";
+  echo '<error>',  $e->getMessage(), "</error>";
+  echo '</gkxml>';
 }
 ?>
