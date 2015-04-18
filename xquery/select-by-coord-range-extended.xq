@@ -56,32 +56,29 @@ declare variable $latTL external;
 declare variable $lonTL external;
 declare variable $latBR external;
 declare variable $lonBR external;
-declare variable $wpt external;
-declare variable $gkid external;
-declare variable $limit external;
+declare variable $limit external := 500;
+declare variable $ghosts external := 0;
+declare variable $older external := 0;
+declare variable $newer external := 0;
 
 
-let $today := current-date()                 
-let $year := year-from-date($today)          
-let $month := month-from-date($today)        
-let $day := day-from-date($today)            
+let $today := current-date()
+let $year := year-from-date($today)
+let $month := month-from-date($today)
+let $day := day-from-date($today)
 let $date := functx:date($year, $month, $day)
 let $basedate := functx:add-months($date, -3)
 
-let $input := doc("geokrety")//geokret[not(@state=0 or @state=3)]
+let $input   := doc("geokrety")/gkxml/geokrety/geokret
+let $filter1 := if ($older  > 0) then $input[@date <  $basedate]
+           else if ($newer  > 0) then $input[@date >= $basedate]
+           else if ($ghosts > 0) then $input[not(@state=0 or @state=3)]
+           else                      $input[   (@state=0 or @state=3)]
 
-let $result := if ($gkid castable as xs:integer) then $input[@id=$gkid]
-               else if ($wpt castable as xs:string) then $input[starts-with(@waypoint, $wpt)]
-               else if ($latTL castable as xs:float and $lonTL castable as xs:float
-                    and $latBR castable as xs:float and $lonBR castable as xs:float) then
-                  $input[number(@lat) <= $latTL and number(@lon) <= $lonTL and number(@lat) >= $latBR and number(@lon) >= $lonBR]
-               else ""
+let $result := if ($latTL castable as xs:float and $lonTL castable as xs:float
+               and $latBR castable as xs:float and $lonBR castable as xs:float)
+               then $filter1[number(@lat) <= $latTL and number(@lon) <= $lonTL and number(@lat) >= $latBR and number(@lon) >= $lonBR]
+               else "<error>'latTL/lonTL/latBR/lonBR' has an invalid type</error>"
 
-let $local_limit := if ($limit castable as xs:integer) then $limit
-                    else 500
-
-return 
-<geokrety>
-{for $a in subsequence($result, 1, $local_limit)
-return $a}
-</geokrety>
+return         
+<geokrety>{for $a in subsequence($result, 1, $limit) return $a}</geokrety>
