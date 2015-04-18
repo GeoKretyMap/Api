@@ -57,27 +57,27 @@ declare variable $lonTL external;
 declare variable $latBR external;
 declare variable $lonBR external;
 declare variable $limit external := 500;
-declare variable $gosts external := 0;
+declare variable $ghosts external := 0;
 declare variable $older external := 0;
 declare variable $newer external := 0;
 
 
-let $today := current-date()                 
-let $year := year-from-date($today)          
-let $month := month-from-date($today)        
-let $day := day-from-date($today)            
+let $today := current-date()
+let $year := year-from-date($today)
+let $month := month-from-date($today)
+let $day := day-from-date($today)
 let $date := functx:date($year, $month, $day)
 let $basedate := functx:add-months($date, -3)
 
-let $input := doc("geokrety")/geokrety/geokret[(@state=0 or @state=3)];
-let $input :=   if ($gosts > 0) then [not(@state=0 or @state=3)];
-                                else [   (@state=0 or @state=3)];
-let $input :=      if ($older > 0) then $input[@date <  $basedate]
-              else if ($newer > 0) then $input[@date >= $basedate]
+let $input   := doc("geokrety")/gkxml/geokrety/geokret
+let $filter1 := if ($older  > 0) then $input[@date <  $basedate]
+           else if ($newer  > 0) then $input[@date >= $basedate]
+           else if ($ghosts > 0) then $input[not(@state=0 or @state=3)]
+           else                      $input[   (@state=0 or @state=3)]
 
 let $result := if ($latTL castable as xs:float and $lonTL castable as xs:float
                and $latBR castable as xs:float and $lonBR castable as xs:float)
-               then $input[number(@lat) <= $latTL and number(@lon) <= $lonTL and number(@lat) >= $latBR and number(@lon) >= $lonBR]
+               then $filter1[number(@lat) <= $latTL and number(@lon) <= $lonTL and number(@lat) >= $latBR and number(@lon) >= $lonBR]
                else "<error>'latTL/lonTL/latBR/lonBR' has an invalid type</error>"
 
 return         

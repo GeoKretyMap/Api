@@ -41,18 +41,19 @@ try {
     $query->bind('wpts', $_GET['wpts'], "xs:string");
   // parse map space
   } else if (isset($_GET['latTL']) and isset($_GET['lonTL']) and isset($_GET['latBR']) and isset($_GET['lonBR'])) {
-    $xquery = "select-by-coord-range.xq";
+    $query = null;
     if (isset($_GET['ghosts'])) {
+      $query = getQuery($session, "select-by-coord-range-extended.xq");
       $query->bind('ghosts', 1, "xs:integer");
-      $xquery = "select-by-coord-range-extended.xq";
     } else if (isset($_GET['older'])) {
+      $query = getQuery($session, "select-by-coord-range-extended.xq");
       $query->bind('older', 1, "xs:integer");
-      $xquery = "select-by-coord-range-extended.xq";
     } else if (isset($_GET['newer'])) {
+      $query = getQuery($session, "select-by-coord-range-extended.xq");
       $query->bind('newer', 1, "xs:integer");
-      $xquery = "select-by-coord-range-extended.xq";
+    } else {
+      $query = getQuery($session, "select-by-coord-range.xq");
     }
-    $query = getQuery($session, $xquery);
     $query->bind('latTL', $_GET['latTL'], "xs:float");
     $query->bind('lonTL', $_GET['lonTL'], "xs:float");
     $query->bind('latBR', $_GET['latBR'], "xs:float");
