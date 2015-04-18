@@ -11,11 +11,11 @@ try {
   // create session
   $session = new Session($BASEX_HOST, $BASEX_PORT, $BASEX_USERNAME, $BASEX_PASSWORD);
 
-  $file = "xquery/select-geokrety-details.xq";
+  $file = "../xquery/select-geokrety-details.xq";
   if (isset($_GET['older'])) {
-    $file = "xquery/select-moves-older.xq";
+    $file = "../xquery/select-moves-older.xq";
   } else if (isset($_GET['newer'])) {
-    $file = "xquery/select-moves-newer.xq";
+    $file = "../xquery/select-moves-newer.xq";
   }
 
   $query = $session->query(file_get_contents($file));
@@ -28,7 +28,7 @@ try {
     $query->bind('gkid', $_GET['gkid'], "xs:integer");
     $result = $query->execute();
     print $result;
-    //$queryHist = $session->query(file_get_contents('xquery/select-moves-details.xq'));
+    //$queryHist = $session->query(file_get_contents('../xquery/select-moves-details.xq'));
     //$queryHist->bind('gkid', $_GET['gkid'], "xs:integer");
     //$result = $queryHist->execute();
     //print $result;

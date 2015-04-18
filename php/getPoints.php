@@ -13,15 +13,15 @@ try {
   // create session
   $session = new Session($BASEX_HOST, $BASEX_PORT, $BASEX_USERNAME, $BASEX_PASSWORD);
 
-  $file = "xquery/select-moves.xq";
+  $file = "../xquery/select-moves.xq";
   if (isset($_GET['ghosts'])) {
-    $file = "xquery/select-moves-ghosts.xq";
+    $file = "../xquery/select-moves-ghosts.xq";
     $specifier='Ghosts';
   } else if (isset($_GET['older'])) {
-    $file = "xquery/select-moves-older.xq";
+    $file = "../xquery/select-moves-older.xq";
     $specifier='Older';
   } else if (isset($_GET['newer'])) {
-    $file = "xquery/select-moves-newer.xq";
+    $file = "../xquery/select-moves-newer.xq";
     $specifier='Newer';
   }
 
