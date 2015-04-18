@@ -9,7 +9,7 @@ echo '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 
 try {
   // create session
-  $session = new Session($BASEX_SERVER, $BASEX_PORT, $BASEX_USERNAME, $BASEX_PASSWORD);
+  $session = new Session($BASEX_HOST, $BASEX_PORT, $BASEX_USERNAME, $BASEX_PASSWORD);
 
   $file = "xquery/select-geokrety-details.xq";
   if (isset($_GET['older'])) {
