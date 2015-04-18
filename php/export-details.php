@@ -1,6 +1,6 @@
 <?php
 
-require_once("config/config.inc.php");
+require_once("../../../../../../config/config.inc.php");
 require_once("lib/BaseXClient.php");
 
 header('Content-Type: application/xml; charset=utf-8');
