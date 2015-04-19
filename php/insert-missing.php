@@ -9,6 +9,8 @@ header('Content-Type: text/plain; charset=utf-8');
 require_once("../../../../../../config/config.inc.php");
 require_once("lib/BaseXClient.php");
 
+$xml_path = "$HOME/XML/";
+
 function logEnd($message) {
   echo "======================================\n";
   echo "$message\n";
@@ -26,7 +28,7 @@ if ($lastxml === false) {
   logEnd('Error: failed to retrieve upstream file');
 }
 echo "== Save 'export2'\n";
-file_put_contents($xml_path.'synchro-export2-full.xml', $last15xml);
+file_put_contents($xml_path.'synchro-export2-full.xml', $lastxml);
 
 echo "== Database connect\n";
 $session = new Session($BASEX_HOST, $BASEX_PORT, $BASEX_WRITE_USERNAME, $BASEX_WRITE_PASSWORD);
