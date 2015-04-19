@@ -16,6 +16,11 @@ function getQuery($session, $file) {
   return $query;
 }
 
+$detailed="";
+if (isset($_GET['details'])) {
+  $detailed="detailed-";
+}
+
 try {
 
   $query=null;
@@ -23,17 +28,17 @@ try {
 
   // parse gkid
   if (isset($_GET['gkid'])) {
-    $query = getQuery($session, 'select-by-gkid.xq');
+    $query = getQuery($session, 'select-'.$detailed.'by-gkid.xq');
     $query->bind('gkid', $_GET['gkid'], "xs:integer");
   // parse waypoints or lat/lon
   } else if (isset($_GET['wpt']) && isset($_GET['lat']) && isset($_GET['lon'])) {
-    $query = getQuery($session, 'select-by-wpt-or-coord-center.xq');
+    $query = getQuery($session, 'select-'.$detailed.'by-wpt-or-coord-center.xq');
     $query->bind('wpt', $_GET['wpt'], "xs:string");
     $query->bind('lat', round($_GET['lat'], 5), "xs:float");
     $query->bind('lon', round($_GET['lon'], 5), "xs:float");
   // parse waypoints
   } else if (isset($_GET['wpt'])) {
-    $query = getQuery($session, 'select-by-wpt.xq');
+    $query = getQuery($session, 'select-'.$detailed.'by-wpt.xq');
     $query->bind('wpt', $_GET['wpt'], "xs:string");
   // parse multiple waypoints
   } else if (isset($_GET['wpts'])) {
@@ -52,7 +57,7 @@ try {
       $query = getQuery($session, "select-by-coord-range-extended.xq");
       $query->bind('newer', 1, "xs:integer");
     } else {
-      $query = getQuery($session, "select-by-coord-range.xq");
+      $query = getQuery($session, "select-'.$detailed.'by-coord-range.xq");
     }
     $query->bind('latTL', $_GET['latTL'], "xs:float");
     $query->bind('lonTL', $_GET['lonTL'], "xs:float");
@@ -60,7 +65,7 @@ try {
     $query->bind('lonBR', $_GET['lonBR'], "xs:float");
   // parse position
   } else if (isset($_GET['lat']) and isset($_GET['lon'])) {
-    $query = getQuery($session, 'select-by-coord-center.xq');
+    $query = getQuery($session, 'select-'.$detailed.'by-coord-center.xq');
     $query->bind('lat', round($_GET['lat'], 5), "xs:float");
     $query->bind('lon', round($_GET['lon'], 5), "xs:float");
   }
