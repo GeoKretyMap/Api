@@ -31,7 +31,7 @@ function saveLastUpdate($filename, $last) {
 }
 
 function readLastUpdate($filename) {
-  $last = file_get_contents($filename);
+  $last = @file_get_contents($filename);
   if ($last !== false) {
     return $last;
   }
