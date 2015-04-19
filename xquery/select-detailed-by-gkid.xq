@@ -5,7 +5,7 @@ declare option output:cdata-section-elements "name description owner";
 
 declare variable $gkid external;
 
-let $result := if ($gkid castable as xs:integer)
+let $result := if ($gkid castable as xs:string)
                then doc("geokrety-details")/gkxml/geokrety/geokret[@id=$gkid]
                else "<error/>"
 

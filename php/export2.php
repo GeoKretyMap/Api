@@ -29,7 +29,7 @@ try {
   // parse gkid
   if (isset($_GET['gkid'])) {
     $query = getQuery($session, 'select-'.$detailed.'by-gkid.xq');
-    $query->bind('gkid', $_GET['gkid'], "xs:integer");
+    $query->bind('gkid', $_GET['gkid'], "xs:string");
   // parse waypoints or lat/lon
   } else if (isset($_GET['wpt']) && isset($_GET['lat']) && isset($_GET['lon'])) {
     $query = getQuery($session, 'select-'.$detailed.'by-wpt-or-coord-center.xq');
