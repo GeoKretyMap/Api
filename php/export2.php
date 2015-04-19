@@ -70,11 +70,13 @@ try {
     $query->bind('lon', round($_GET['lon'], 5), "xs:float");
   }
 
-  // return the datas
-  print $query->execute();
+  if ($query !== null) {
+    // return the datas
+    print $query->execute();
 
-  // close query instance
-  $query->close();
+    // close query instance
+    $query->close();
+  }
 
   // close session
   $session->close();
