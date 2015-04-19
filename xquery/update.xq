@@ -1,6 +1,7 @@
 xquery version "1.0";
+declare variable $xml external;
 
-let $input := doc("/home/gkmap-dev/XML/synchro-15min.xml")//geokret
+let $input := doc($xml)//geokret
 
 for $b in $input
 let $gk := $b/@id/string()

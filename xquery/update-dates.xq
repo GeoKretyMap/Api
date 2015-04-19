@@ -2,6 +2,8 @@ xquery version "1.0";
 
 declare namespace functx = "http://www.functx.com";
 
+declare variable $xml external;
+
 declare function functx:repeat-string
   ( $stringToRepeat as xs:string? ,
     $count as xs:integer )  as xs:string {
@@ -35,7 +37,7 @@ let $year := year-from-date($today)
 let $month := month-from-date($today)
 let $day := day-from-date($today)
 
-let $input := doc("/home/gkmap-dev/XML/synchro-15min.xml")//geokret/@id/string()
+let $input := doc($xml)//geokret/@id/string()
 let $date := functx:date($year, $month, $day)
 
 

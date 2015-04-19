@@ -74,12 +74,14 @@ $count = $session->execute('xquery count(doc("'. $xml_file .'")//geokret)');
 echo $count." to update...\n";
 
 if ( $count > 0) {
-  echo "=== Update Krets Details\n";
+  echo "=== Update GeoKrety Details\n";
   $query = $session->query(file_get_contents("../xquery/update-details.xq"));
+  $query->bind('xml', $xml_path.'synchro-24hour.xml', "xs:string");
   $query->execute();
   
-  echo "=== Update Krets Details (Images)\n";
+  echo "=== Update GeoKrety Details (Images)\n";
   $query = $session->query(file_get_contents("../xquery/update-details-images.xq"));
+  $query->bind('xml', $xml_path.'synchro-24hour.xml', "xs:string");
   $query->execute();
 
   echo "=== Close database\n";

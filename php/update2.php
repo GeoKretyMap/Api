@@ -62,7 +62,7 @@ if ($last15xml === false) {
 # save in file
 file_put_contents($xml_file, $last15xml);
 file_put_contents($xml_path.'synchro-15min.xml', $last15xml);
-echo $last15xml . "\n";
+//echo $last15xml . "\n";
 
 
 echo "== Database connect\n";
@@ -74,12 +74,14 @@ $count = $session->execute('xquery count(doc("'. $xml_file .'")//geokret)');
 echo $count." to update...\n";
 
 if ( $count > 0) {
-  echo "=== Update Krets\n";
+  echo "=== Update GeoKrety\n";
   $query = $session->query(file_get_contents("../xquery/update.xq"));
+  $query->bind('xml', $xml_path.'synchro-15min.xml', "xs:string");
   $query->execute();
   
-  echo "=== Update Krets (Dates)\n";
+  echo "=== Update GeoKrety (Dates)\n";
   $query = $session->query(file_get_contents("../xquery/update-dates.xq"));
+  $query->bind('xml', $xml_path.'synchro-15min.xml', "xs:string");
   $query->execute();
   
   #echo "=== Update Krets (Images)\n";

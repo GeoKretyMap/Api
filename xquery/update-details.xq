@@ -1,8 +1,9 @@
 xquery version "1.0";
+declare variable $xml external;
 
 (: Insert or update long desc :)
 
-let $input := doc("/home/gkmap-dev/XML/synchro-24hour.xml")//geokret
+let $input := doc($xml)//geokret
 
 for $gk in $input
 let $gkid := $gk/@id/string()

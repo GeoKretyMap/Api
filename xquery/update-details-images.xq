@@ -1,10 +1,11 @@
 xquery version "1.0";
+declare variable $xml external;
 declare variable $gkid external;
 
 (:  Add images to details from 24h imports :)
 (: need open "geokrety-details"; :)
 
-let $input := doc("/home/gkmap-dev/XML/synchro-24hour.xml")//geokret/@id/string()
+let $input := doc($xml)//geokret/@id/string()
 
 for $gkid in $input
 let $image := doc("geokrety")//geokret[@id=$gkid]/@image/string()
