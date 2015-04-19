@@ -6,7 +6,7 @@ declare option output:cdata-section-elements "name description owner";
 declare variable $wpt external;
 
 let $result := if ($wpt castable as xs:string)
-               then doc("geokrety-details")/gkxml/geokrety/geokret[(state=0 or state=3) and waypoints/waypoint=$wpt]
+               then doc("geokrety-details")/gkxml/geokrety/geokret[(state="0" or state="3") and waypoints/waypoint=$wpt]
                else "<error>'wpt' has an invalid type</error>"
 
 return         
