@@ -23,7 +23,7 @@ echo "Backup databases\n";
 echo "======================================\n";
 
 echo "== Download latest 'export2' (Full)\n";
-$lastxml = file_get_contents('http://geokrety.org/rzeczy/xml/export2-full.xml.bz2');
+$lastxml = bzdecompress(file_get_contents('http://geokrety.org/rzeczy/xml/export2-full.xml.bz2'));
 if ($lastxml === false) {
   logEnd('Error: failed to retrieve upstream file');
 }
