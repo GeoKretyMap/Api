@@ -8,7 +8,7 @@ declare variable $lon external;
 declare variable $limit external := 500;
 
 let $result := if ($lat castable as xs:float and $lon castable as xs:float)
-               then doc("geokrety-details")/gkxml/geokrety/geokret[(state=0 or state=3)
+               then doc("geokrety-details")/gkxml/geokrety/geokret[(state="0" or state="3")
                    and (xs:float(position/@latitude) eq $lat and xs:float(position/@longitude) eq $lon)]
                else "<error>'lat' and/or 'lon' has an invalid type</error>"
 

@@ -72,8 +72,8 @@ let $basedate := functx:add-months($date, -3)
 let $input   := doc("geokrety")/gkxml/geokrety/geokret
 let $filter1 := if ($older  > 0) then $input[@date <  $basedate]
            else if ($newer  > 0) then $input[@date >= $basedate]
-           else if ($ghosts > 0) then $input[not(@state=0 or @state=3)]
-           else                      $input[   (@state=0 or @state=3)]
+           else if ($ghosts > 0) then $input[not(@state="0" or @state="3")]
+           else                      $input[   (@state="0" or @state="3")]
 
 let $result := if ($latTL castable as xs:float and $lonTL castable as xs:float
                and $latBR castable as xs:float and $lonBR castable as xs:float)
