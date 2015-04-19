@@ -8,11 +8,11 @@ let $input := doc($xml)//geokret
 
 for $gk in $input
 let $gkid := $gk/@id/string()
-let $gkdetail := doc("geokrety-details")/gkxml/geokret[@id=$gkid]
+let $gkdetail := doc("geokrety-details")/gkxml/geokrety/geokret[@id=$gkid]
 
 return
  if (not(exists($gkdetail))) then
-   insert node $gk into doc("geokrety-details")/gkxml
+   insert node $gk into doc("geokrety-details")/gkxml/geokrety
  else
    ()
 
