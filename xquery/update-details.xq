@@ -3,7 +3,7 @@ declare variable $xml external;
 
 (: Insert or update long desc :)
 
-let $input := doc($xml)//geokret
+let $input := doc($xml)/gkxml/geokret
 
 for $gk in $input
 let $gkid := $gk/@id/string()
