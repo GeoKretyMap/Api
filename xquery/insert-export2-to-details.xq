@@ -1,10 +1,8 @@
 xquery version "1.0";
-declare variable $xml external;
 
-(:  Add missing GK to details from downloaded exports :)
-(: need open "geokrety-details"; :)
+(:  Add missing GK to details from geokrety list :)
 
-let $input := doc($xml)//geokret
+let $input := doc('geokrety')/gkxml/geokrety/geokret
 
 for $gk in $input
 let $gkid := $gk/@id/string()
