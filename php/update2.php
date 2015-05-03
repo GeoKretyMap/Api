@@ -47,6 +47,7 @@ function logEnd($message) {
   die();
 }
 
+$time = time();
 $now = $date = date('YmdHis');
 $last15 = readLastUpdate($xml_path.'synchro-15min.txt');
 $xml_file = $xml_path.$last15.'.xml';
@@ -72,6 +73,9 @@ $session = new Session($BASEX_HOST, $BASEX_PORT, $BASEX_WRITE_USERNAME, $BASEX_W
 echo "=== Count Krets: ";
 $count = $session->execute('xquery count(doc("'. $xml_file .'")//geokret)');
 echo $count." to update...\n";
+
+$rrd = new RRDUpdater("$HOME/rrd/filename.rrd");
+$rrd->update(array("BASIC" => $count), $time);
 
 if ( $count > 0) {
   echo "=== Update GeoKrety\n";
