@@ -4,7 +4,7 @@ declare variable $xml external;
 (:  Add missing status to simple api from 24h imports :)
 (: need open "geokrety-details"/"geokrety"; :)
 
-let $input := doc($xml)//geokret/@id/string()
+let $input := doc($xml)//geokret
 
 for $geokret in $input
 let $gkid := $geokret/@id/string()
