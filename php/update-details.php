@@ -88,6 +88,11 @@ if ( $count > 0) {
   $query->bind('xml', $xml_path.'synchro-24hour.xml', "xs:string");
   $query->execute();
 
+  echo "=== Update GeoKrety (Missing)\n";
+  $query = $session->query(file_get_contents("../xquery/update-details-missing.xq"));
+  $query->bind('xml', $xml_path.'synchro-24hour.xml', "xs:string");
+  $query->execute();
+
   echo "=== Close database\n";
   // close query instance
   $query->close();
