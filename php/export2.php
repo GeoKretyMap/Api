@@ -4,7 +4,7 @@ require_once('../../../../../../config/config.inc.php');
 require_once('lib/BaseXClient.php');
 
 function getQuery($session, $file) {
-  $query = $session->query(file_get_contents('../xquery/$file'));
+  $query = $session->query(file_get_contents('../xquery/' . $file));
 
   if (isset($_GET['limit'])) {
     $query->bind('limit', $_GET['limit'], 'xs:integer');
