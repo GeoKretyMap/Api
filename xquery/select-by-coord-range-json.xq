@@ -78,10 +78,10 @@ let $input   := if ($details> 0)
                 then doc("geokrety-details")/gkxml/geokrety/geokret
                 else doc("geokrety")/gkxml/geokrety/geokret
 
-let $filter1 := if ($older  > 0 and $newer = 0) then $input[@date <  $basedate or not(@date)]
+let $filter1 := if ($older  > 0 and $newer = 0) then $input[@date <  $basedate]
            else if ($newer  > 0 and $older = 0) then $input[@date >= $basedate]
-           else if ($newer  = 0 and $older = 0) then $input
-           else ''
+           else if ($newer  > 0 and $older > 0) then $input
+           else $input[not(@date)]
 
 let $filter2 := if ($ghosts > 0)
                 then $filter1[not(@state="0" or @state="3")]
