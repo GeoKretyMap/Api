@@ -80,10 +80,12 @@ let $input   := if ($details> 0)
 
 let $filter1 := if ($older  > 0 and $newer = 0) then $input[@date <  $basedate or not(@date)]
            else if ($newer  > 0 and $older = 0) then $input[@date >= $basedate]
-           else $input
+           else if ($newer  = 0 and $older = 0) then $input
+           else ''
 
-let $filter2 := if ($ghosts > 0) then $filter1[not(@state="0" or @state="3")]
-           else                       $filter1[   (@state="0" or @state="3")]
+let $filter2 := if ($ghosts > 0)
+                then $filter1[not(@state="0" or @state="3")]
+                else $filter1[    @state="0" or @state="3" ]
 
 let $result := if ($latTL castable as xs:float and $lonTL castable as xs:float
                and $latBR castable as xs:float and $lonBR castable as xs:float)
