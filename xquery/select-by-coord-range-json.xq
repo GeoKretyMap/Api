@@ -74,15 +74,20 @@ let $day := day-from-date($today)
 let $date := functx:date($year, $month, $day)
 let $basedate := functx:add-months($date, -3)
 
-let $input   := if ($details> 0) then doc("geokrety-details")/gkxml/geokrety/geokret else doc("geokrety")/gkxml/geokrety/geokret
-let $filter1 := if ($older  > 0) then $input[@date <  $basedate]
-           else if ($newer  > 0) then $input[@date >= $basedate]
-           else if ($ghosts > 0) then $input[not(@state="0" or @state="3")]
-           else                       $input[   (@state="0" or @state="3")]
+let $input   := if ($details> 0)
+                then doc("geokrety-details")/gkxml/geokrety/geokret
+                else doc("geokrety")/gkxml/geokrety/geokret
+
+let $filter1 := if ($older  > 0 and $newer = 0) then $input[@date <  $basedate]
+           else if ($newer  > 0 and $older = 0) then $input[@date >= $basedate]
+           else $input
+
+let $filter2 := if ($ghosts > 0) then $filter1[not(@state="0" or @state="3")]
+           else                       $filter1[   (@state="0" or @state="3")]
 
 let $result := if ($latTL castable as xs:float and $lonTL castable as xs:float
                and $latBR castable as xs:float and $lonBR castable as xs:float)
-               then $filter1[xs:float(@lat) <= xs:float($latTL) and xs:float(@lon) <= xs:float($lonTL) and xs:float(@lat) >= xs:float($latBR) and xs:float(@lon) >= xs:float($lonBR)]
+               then $filter2[xs:float(@lat) <= xs:float($latTL) and xs:float(@lon) <= xs:float($lonTL) and xs:float(@lat) >= xs:float($latBR) and xs:float(@lon) >= xs:float($lonBR)]
                else "<error>'latTL/lonTL/latBR/lonBR' has an invalid type</error>"
 (:
 {

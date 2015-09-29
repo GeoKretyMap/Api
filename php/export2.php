@@ -50,9 +50,11 @@ try {
     $query = getQuery($session, 'select-by-coord-range'.$json.'.xq');
     if (isset($_GET['ghosts'])) {
       $query->bind('ghosts', 1, 'xs:integer');
-    } else if (isset($_GET['older'])) {
+    }
+    if (isset($_GET['older'])) {
       $query->bind('older', 1, 'xs:integer');
-    } else if (isset($_GET['newer'])) {
+    }
+    if (isset($_GET['newer'])) {
       $query->bind('newer', 1, 'xs:integer');
     }
     if (isset($_GET['details'])) {
