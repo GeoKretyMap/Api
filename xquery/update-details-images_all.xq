@@ -2,7 +2,8 @@ xquery version "1.0";
 declare variable $xml external;
 declare variable $gkid external;
 
-(: Update geokrety-details/image from known geokrety/image  :)
+(:  Add images to details from 24h imports :)
+(: need open "geokrety-details"; :)
 
 let $input := doc("geokrety")//geokret/@id/string()
 
