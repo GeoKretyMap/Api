@@ -47,18 +47,16 @@ try {
     $query->bind('wpts', $_GET['wpts'], 'xs:string');
   // parse map space
   } else if (isset($_GET['latTL']) and isset($_GET['lonTL']) and isset($_GET['latBR']) and isset($_GET['lonBR'])) {
-    $query = null;
+    $query = getQuery($session, 'select-by-coord-range'.$json.'.xq');
     if (isset($_GET['ghosts'])) {
-      $query = getQuery($session, 'select-by-coord-range-extended.xq');
       $query->bind('ghosts', 1, 'xs:integer');
     } else if (isset($_GET['older'])) {
-      $query = getQuery($session, 'select-by-coord-range-extended.xq');
       $query->bind('older', 1, 'xs:integer');
     } else if (isset($_GET['newer'])) {
-      $query = getQuery($session, 'select-by-coord-range-extended.xq');
       $query->bind('newer', 1, 'xs:integer');
-    } else {
-      $query = getQuery($session, 'select-'.$detailed.'by-coord-range'.$json.'.xq');
+    }
+    if (isset($_GET['details'])) {
+      $query->bind('details', 1, 'xs:integer');
     }
     $query->bind('latTL', round($_GET['latTL'], 5), 'xs:float');
     $query->bind('lonTL', round($_GET['lonTL'], 5), 'xs:float');

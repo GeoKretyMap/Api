@@ -1,6 +1,8 @@
 xquery version "1.0";
 
 declare namespace functx = "http://www.functx.com";
+declare namespace output = "http://www.w3.org/2010/xslt-xquery-serialization";
+declare option output:cdata-section-elements "name description owner";
 
 
 declare function functx:add-months
@@ -62,6 +64,7 @@ declare variable $limit external := 500;
 declare variable $ghosts external := 0;
 declare variable $older external := 0;
 declare variable $newer external := 0;
+declare variable $details external := 0;
 
 
 let $today := current-date()
@@ -71,7 +74,7 @@ let $day := day-from-date($today)
 let $date := functx:date($year, $month, $day)
 let $basedate := functx:add-months($date, -3)
 
-let $input   := doc("geokrety")/gkxml/geokrety/geokret
+let $input   := if ($details> 0) then doc("geokrety-details")/gkxml/geokrety/geokret else doc("geokrety")/gkxml/geokrety/geokret
 let $filter1 := if ($older  > 0) then $input[@date <  $basedate]
            else if ($newer  > 0) then $input[@date >= $basedate]
            else if ($ghosts > 0) then $input[not(@state="0" or @state="3")]
