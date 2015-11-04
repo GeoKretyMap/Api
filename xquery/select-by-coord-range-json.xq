@@ -55,6 +55,12 @@ declare function functx:date
        functx:pad-integer-to-length(xs:integer($month),2),'-',
        functx:pad-integer-to-length(xs:integer($day),2)))
  };
+declare function functx:age
+  ( $date1 as xs:anyAtomicType ,
+    $date2 as xs:anyAtomicType )  as xs:integer {
+
+   days-from-duration($date1 - xs:date(string-join((substring($date2, 1, 4), substring($date2, 6, 2), substring($date2, 9, 2)), '-')))
+ };
 
 declare variable $latTL external;
 declare variable $lonTL external;
@@ -105,7 +111,8 @@ let $result := if ($latTL castable as xs:float and $lonTL castable as xs:float
          },
          "type":"Feature",
          "properties":{
-            "popupContent":"Trojan"
+            "popupContent":"Trojan",
+            "age":"newer"
          }
       },
    ]
@@ -137,6 +144,9 @@ string(if ($a/@date) then 'Last move: ' || $a/@date || '<br />' else '') ||
 'Travelled: ' || $a/@dist || ' km<br />' ||
 string(if ($a/@image) then '<img src="http://geokretymap.org/gkimage/' || $a/@image || '" width="100" />' else '')
 }</popupContent>
+        <age>{
+string(if ($a/@date) then functx:age($date, $a/@date) else '99999')
+}</age>
       </properties>
     </_>
 }
