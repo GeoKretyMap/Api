@@ -142,7 +142,7 @@ json:serialize(
 string(if ($a/@waypoint) then 'In <a href="http://geokrety.org/go2geo/index.php?wpt=' || $a/@waypoint || '" target="_blank">' || $a/@waypoint || '</a><br />' else '') ||
 string(if ($a/@date) then 'Last move: ' || $a/@date || '<br />' else '') ||
 'Travelled: ' || $a/@dist || ' km<br />' ||
-string(if ($a/@image) then '<img src="http://geokretymap.org/gkimage/' || $a/@image || '" width="100" />' else '')
+string(if ($a/@image) then '<img src="https://geokretymap.org/gkimage/' || $a/@image || '" width="100" />' else '')
 }</popupContent>
         <age>{
 string(if ($a/@date) then functx:age($date, $a/@date) else '99999')
