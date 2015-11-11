@@ -70,6 +70,7 @@ declare variable $limit external := 500;
 declare variable $ghosts external := 0;
 declare variable $older external := 0;
 declare variable $newer external := 0;
+declare variable $missing external := 0;
 declare variable $details external := 0;
 
 
@@ -93,9 +94,13 @@ let $filter2 := if ($ghosts > 0)
                 then $filter1[not(@state="0" or @state="3")]
                 else $filter1[    @state="0" or @state="3" ]
 
+let $filter3 := if ($missing > 0)
+                then $filter2[@missing="1"]
+                else $filter2
+
 let $result := if ($latTL castable as xs:float and $lonTL castable as xs:float
                and $latBR castable as xs:float and $lonBR castable as xs:float)
-               then $filter2[xs:float(@lat) <= xs:float($latTL) and xs:float(@lon) <= xs:float($lonTL) and xs:float(@lat) >= xs:float($latBR) and xs:float(@lon) >= xs:float($lonBR)]
+               then $filter3[xs:float(@lat) <= xs:float($latTL) and xs:float(@lon) <= xs:float($lonTL) and xs:float(@lat) >= xs:float($latBR) and xs:float(@lon) >= xs:float($lonBR)]
                else "<error>'latTL/lonTL/latBR/lonBR' has an invalid type</error>"
 (:
 {
@@ -118,6 +123,8 @@ let $result := if ($latTL castable as xs:float and $lonTL castable as xs:float
    ]
 }
 <![CDATA[<br /><img src=\"http://geokretymap.org/gkimage/]]>"{string($a/@image)}<![CDATA[" />]]>
+
+days-from-duration($date - xs:dateTime($a/@date))
 :)
 
 return         

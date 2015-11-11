@@ -60,6 +60,9 @@ try {
     if (isset($_GET['details'])) {
       $query->bind('details', 1, 'xs:integer');
     }
+    if (isset($_GET['missing'])) {
+      $query->bind('missing', 1, 'xs:integer');
+    }
     $query->bind('latTL', round($_GET['latTL'], 5), 'xs:float');
     $query->bind('lonTL', round($_GET['lonTL'], 5), 'xs:float');
     $query->bind('latBR', round($_GET['latBR'], 5), 'xs:float');
