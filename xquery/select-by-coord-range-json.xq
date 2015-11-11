@@ -138,8 +138,8 @@ json:serialize(
       <type>Feature</type>
       <properties type="object">
         <popupContent>{
-'<h1><a href="http://geokretymap.org/' || $a/@id || '" target="_blank">' || $a/data() || '</a></h1>' ||
-string(if ($a/@waypoint) then 'In <a href="http://geokrety.org/go2geo/index.php?wpt=' || $a/@waypoint || '" target="_blank">' || $a/@waypoint || '</a><br />' else '') ||
+'<h1' || (if ($a/@missing = '1') then ' class="missing"' else '') || '><a href="http://geokretymap.org/' || $a/@id || '" target="_blank">' || $a/data() || '</a></h1>' ||
+string(if ($a/@waypoint) then (if ($a/not(@state="0" or @state="3")) then 'Last seen in' else 'In') || ' <a href="http://geokrety.org/go2geo/index.php?wpt=' || $a/@waypoint || '" target="_blank">' || $a/@waypoint || '</a><br />' else '') ||
 string(if ($a/@date) then 'Last move: ' || $a/@date || '<br />' else '') ||
 'Travelled: ' || $a/@dist || ' km<br />' ||
 string(if ($a/@image) then '<img src="https://geokretymap.org/gkimage/' || $a/@image || '" width="100" />' else '')
