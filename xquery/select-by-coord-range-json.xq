@@ -1,61 +1,12 @@
 xquery version "1.0";
 
-declare namespace functx = "http://www.functx.com";
+import module namespace functx = 'http://www.functx.com';
+declare namespace geokretymap = 'http://geokretymap.org';
 declare namespace output = "http://www.w3.org/2010/xslt-xquery-serialization";
 declare option output:cdata-section-elements "name description owner";
 
 
-declare function functx:add-months
-  ( $date as xs:anyAtomicType? ,
-    $months as xs:integer )  as xs:date? {
-
-   xs:date($date) + functx:yearMonthDuration(0,$months)
- };
-declare function functx:yearMonthDuration
-  ( $years as xs:decimal? ,
-    $months as xs:integer? )  as xs:yearMonthDuration {
-
-    (xs:yearMonthDuration('P1M') * functx:if-empty($months,0)) +
-    (xs:yearMonthDuration('P1Y') * functx:if-empty($years,0))
- };
-declare function functx:if-empty
-  ( $arg as item()? ,
-    $value as item()* )  as item()* {
-
-  if (string($arg) != '')
-  then data($arg)
-  else $value
- };
-declare function functx:repeat-string
-  ( $stringToRepeat as xs:string? ,
-    $count as xs:integer )  as xs:string {
-
-   string-join((for $i in 1 to $count return $stringToRepeat),
-                        '')
- };
-declare function functx:pad-integer-to-length
-  ( $integerToPad as xs:anyAtomicType? ,
-    $length as xs:integer )  as xs:string {
-
-   if ($length < string-length(string($integerToPad)))
-   then error(xs:QName('functx:Integer_Longer_Than_Length'))
-   else concat
-         (functx:repeat-string(
-            '0',$length - string-length(string($integerToPad))),
-          string($integerToPad))
- };
-declare function functx:date
-  ( $year as xs:anyAtomicType ,
-    $month as xs:anyAtomicType ,
-    $day as xs:anyAtomicType )  as xs:date {
-
-   xs:date(
-     concat(
-       functx:pad-integer-to-length(xs:integer($year),4),'-',
-       functx:pad-integer-to-length(xs:integer($month),2),'-',
-       functx:pad-integer-to-length(xs:integer($day),2)))
- };
-declare function functx:age
+declare function geokretymap:age
   ( $date1 as xs:anyAtomicType ,
     $date2 as xs:anyAtomicType )  as xs:integer {
 
@@ -67,28 +18,36 @@ declare variable $lonTL external;
 declare variable $latBR external;
 declare variable $lonBR external;
 declare variable $limit external := 500;
-declare variable $ghosts external := 0;
-declare variable $older external := 0;
+
 declare variable $newer external := 0;
+declare variable $older external := 0;
+declare variable $nodate external := 0;
+declare variable $ghosts external := 0;
 declare variable $missing external := 0;
 declare variable $details external := 0;
+declare variable $daysFrom external := 0;
+declare variable $daysTo external := 2;
 
 
-let $today := current-date()
-let $year := year-from-date($today)
-let $month := month-from-date($today)
-let $day := day-from-date($today)
-let $date := functx:date($year, $month, $day)
-let $basedate := functx:add-months($date, -3)
+let $year := year-from-date(current-date())
+let $month := month-from-date(current-date())
+let $day := day-from-date(current-date())
+let $today := functx:date($year, $month, $day)
+
+let $basedate := functx:add-months($today, -3)
+
+let $dateFrom := $today - functx:dayTimeDuration($daysFrom, 0, 0, 0)
+let $dateTo   := $today - functx:dayTimeDuration($daysTo  , 0, 0, 0)
 
 let $input   := if ($details> 0)
                 then doc("geokrety-details")/gkxml/geokrety/geokret
                 else doc("geokrety")/gkxml/geokrety/geokret
 
-let $filter1 := if ($older  > 0 and $newer = 0) then $input[@date <  $basedate]
-           else if ($newer  > 0 and $older = 0) then $input[@date >= $basedate]
-           else if ($newer  > 0 and $older > 0) then $input
-           else $input[not(@date)]
+let $filter1 := if ($nodate = 0 and $older = 0) then $input[              ($dateFrom >= @date and @date >= $dateTo)]
+           else if ($nodate = 0 and $older > 0) then $input[               $dateFrom >= @date]
+           else if ($nodate > 0 and $older = 0) then $input[not(@date) or ($dateFrom >= @date and @date >= $dateTo)]
+           else if ($nodate > 0 and $older > 0) then $input[not(@date) or  $dateFrom >= @date]
+           else $input
 
 let $filter2 := if ($ghosts > 0)
                 then $filter1[not(@state="0" or @state="3")]
@@ -124,7 +83,7 @@ let $result := if ($latTL castable as xs:float and $lonTL castable as xs:float
 }
 <![CDATA[<br /><img src=\"http://geokretymap.org/gkimage/]]>"{string($a/@image)}<![CDATA[" />]]>
 
-days-from-duration($date - xs:dateTime($a/@date))
+days-from-duration($today - xs:dateTime($a/@date))
 :)
 
 return         
@@ -152,7 +111,7 @@ string(if ($a/@date) then 'Last move: ' || $a/@date || '<br />' else '') ||
 string(if ($a/@image) then '<img src="https://geokretymap.org/gkimage/' || $a/@image || '" width="100" />' else '')
 }</popupContent>
         <age>{
-string(if ($a/@date) then functx:age($date, $a/@date) else '99999')
+string(if ($a/@date) then geokretymap:age($today, $a/@date) else '99999')
 }</age>
       </properties>
     </_>

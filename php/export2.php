@@ -48,20 +48,29 @@ try {
   // parse map space
   } else if (isset($_GET['latTL']) and isset($_GET['lonTL']) and isset($_GET['latBR']) and isset($_GET['lonBR'])) {
     $query = getQuery($session, 'select-by-coord-range'.$json.'.xq');
-    if (isset($_GET['ghosts'])) {
-      $query->bind('ghosts', 1, 'xs:integer');
+    if (isset($_GET['daysFrom'])) {
+      $query->bind('daysFrom', $_GET['daysFrom'], 'xs:integer');
     }
-    if (isset($_GET['older'])) {
-      $query->bind('older', 1, 'xs:integer');
+    if (isset($_GET['daysTo'])) {
+      $query->bind('daysTo', $_GET['daysTo'], 'xs:integer');
     }
     if (isset($_GET['newer'])) {
       $query->bind('newer', 1, 'xs:integer');
     }
-    if (isset($_GET['details'])) {
-      $query->bind('details', 1, 'xs:integer');
+    if (isset($_GET['older'])) {
+      $query->bind('older', 1, 'xs:integer');
+    }
+    if (isset($_GET['nodate'])) {
+      $query->bind('nodate', 1, 'xs:integer');
+    }
+    if (isset($_GET['ghosts'])) {
+      $query->bind('ghosts', 1, 'xs:integer');
     }
     if (isset($_GET['missing'])) {
       $query->bind('missing', 1, 'xs:integer');
+    }
+    if (isset($_GET['details'])) {
+      $query->bind('details', 1, 'xs:integer');
     }
     $query->bind('latTL', round($_GET['latTL'], 5), 'xs:float');
     $query->bind('lonTL', round($_GET['lonTL'], 5), 'xs:float');
