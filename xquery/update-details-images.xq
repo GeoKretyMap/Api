@@ -5,7 +5,7 @@ declare variable $gkid external;
 (:  Add images to details from 24h imports :)
 (: need open "geokrety-details"; :)
 
-let $input := doc($xml)//geokret/@id/string()
+let $input := distinct-values(doc($xml)//geokret/@id/string())
 
 for $gkid in $input
 let $image := doc("geokrety")//geokret[@id=$gkid]/@image/string()

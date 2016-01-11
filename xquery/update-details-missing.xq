@@ -5,10 +5,10 @@ declare variable $xml external;
 (: need open "geokrety-details"/"geokrety"; :)
 
 let $input := doc($xml)//geokret
+let $gkids := distinct-values($input/@id/string())
 
-for $geokret in $input
-let $gkid := $geokret/@id/string()
-let $missing := $geokret/missing
+for $gkid in $gkids
+let $missing := $input[@id=$gkid]/missing
 let $gk := doc("geokrety")/gkxml/geokrety/geokret[@id=$gkid]
 return
   if (exists($gk) and count($gk) = 1) then
