@@ -92,6 +92,10 @@ if ( $count > 0) {
   #$query = $session->query(file_get_contents("../xquery/update-images.xq"));
   #$query->execute();
 
+  echo "=== Optimize GeoKrety\n";
+  $query = $session->query(file_get_contents("../xquery/optimize.xq"));
+  $query->execute();
+
   echo "=== Close database\n";
   // close query instance
   $query->close();

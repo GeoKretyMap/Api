@@ -93,6 +93,10 @@ if ( $count > 0) {
   $query->bind('xml', $xml_path.'synchro-24hour.xml', "xs:string");
   $query->execute();
 
+  echo "=== Optimize GeoKrety Details\n";
+  $query = $session->query(file_get_contents("../xquery/optimize-details.xq"));
+  $query->execute();
+
   echo "=== Close database\n";
   // close query instance
   $query->close();
