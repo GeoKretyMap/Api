@@ -56,7 +56,7 @@ echo "Last update was at: $last15\n";
 echo "======================================\n";
 
 # Download updates
-$last15xml = file_get_contents("http://geokrety.org/export.php?modifiedsince=$last15");
+$last15xml = file_get_contents("https://geokrety.org/export.php?modifiedsince=$last15");
 if ($last15xml === false) {
   logEnd('Error: failed to retrieve upstream file');
 }

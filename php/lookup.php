@@ -11,7 +11,7 @@ if (isset($_GET['gk'])) {
 }
 
 if ($gkid > 0) {
-   $link='http://geokrety.org/konkret.php?id='.$gkid;
+   $link='https://geokrety.org/konkret.php?id='.$gkid;
    echo '<h2>'.$gkid.'</h2>';
    echo '<p><a href="'.$link.'">View on GeoKrety.org</a></p>';
    header("Location: $link");
