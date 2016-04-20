@@ -78,15 +78,27 @@ $rrd = new RRDUpdater("$HOME/rrd/filename.rrd");
 $rrd->update(array("BASIC" => $count), $time);
 
 if ( $count > 0) {
+  echo "=== Optimize GeoKrety\n";
+  $query = $session->query(file_get_contents("../xquery/optimize.xq"));
+  $query->execute();
+  $query->close();
+  
   echo "=== Update GeoKrety\n";
   $query = $session->query(file_get_contents("../xquery/update.xq"));
   $query->bind('xml', $xml_path.'synchro-15min.xml', "xs:string");
   $query->execute();
+  $query->close();
+
+  echo "=== Optimize GeoKrety\n";
+  $query = $session->query(file_get_contents("../xquery/optimize.xq"));
+  $query->execute();
+  $query->close();
   
   echo "=== Update GeoKrety (Dates)\n";
   $query = $session->query(file_get_contents("../xquery/update-dates.xq"));
   $query->bind('xml', $xml_path.'synchro-15min.xml', "xs:string");
   $query->execute();
+  $query->close();
   
   #echo "=== Update Krets (Images)\n";
   #$query = $session->query(file_get_contents("../xquery/update-images.xq"));
@@ -95,6 +107,7 @@ if ( $count > 0) {
   echo "=== Optimize GeoKrety\n";
   $query = $session->query(file_get_contents("../xquery/optimize.xq"));
   $query->execute();
+  $query->close();
 
   echo "=== Close database\n";
   // close query instance
