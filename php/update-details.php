@@ -78,24 +78,48 @@ $rrd = new RRDUpdater("$HOME/rrd/filename.rrd");
 $rrd->update(array("DETAILS" => $count), $time);
 
 if ( $count > 0) {
+  echo "=== Optimize GeoKrety\n";
+  $query = $session->query(file_get_contents("../xquery/optimize.xq"));
+  $query->execute();
+  $query->close();
+
+  echo "=== Optimize GeoKrety Details\n";
+  $query = $session->query(file_get_contents("../xquery/optimize-details.xq"));
+  $query->execute();
+  $query->close();
+
   echo "=== Update GeoKrety Details\n";
   $query = $session->query(file_get_contents("../xquery/update-details.xq"));
   $query->bind('xml', $xml_path.'synchro-24hour.xml', "xs:string");
   $query->execute();
+  $query->close();
+
+  echo "=== Optimize GeoKrety Details\n";
+  $query = $session->query(file_get_contents("../xquery/optimize-details.xq"));
+  $query->execute();
+  $query->close();
   
   echo "=== Update GeoKrety Details (Images)\n";
   $query = $session->query(file_get_contents("../xquery/update-details-images.xq"));
   $query->bind('xml', $xml_path.'synchro-24hour.xml', "xs:string");
   $query->execute();
+  $query->close();
+
+  echo "=== Optimize GeoKrety Details\n";
+  $query = $session->query(file_get_contents("../xquery/optimize-details.xq"));
+  $query->execute();
+  $query->close();
 
   echo "=== Update GeoKrety (Missing)\n";
   $query = $session->query(file_get_contents("../xquery/update-details-missing.xq"));
   $query->bind('xml', $xml_path.'synchro-24hour.xml', "xs:string");
   $query->execute();
+  $query->close();
 
-  echo "=== Optimize GeoKrety Details\n";
-  $query = $session->query(file_get_contents("../xquery/optimize-details.xq"));
+  echo "=== Optimize GeoKrety\n";
+  $query = $session->query(file_get_contents("../xquery/optimize.xq"));
   $query->execute();
+  $query->close();
 
   echo "=== Close database\n";
   // close query instance
